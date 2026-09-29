@@ -8,13 +8,13 @@ dotenv.config();
 const PORT = 3000;
 const API_KEY = process.env.OPENWEATHER_API_KEY;
 
-// 대한민국 주요 도시 좌표 데이터
+// 주요 도시 좌표 정보
 const CITIES = {
   seoul: { name: "서울", lat: 37.5665, lon: 126.9780 },
-  busan: { name: "부산", lat: 35.1796, lon: 129.0756 },
-  daegu: { name: "대구", lat: 35.8714, lon: 128.6014 },
-  incheon: { name: "인천", lat: 37.4563, lon: 126.7052 },
-  gwangju: { name: "광주", lat: 35.1595, lon: 126.8526 }
+  tokyo: { name: "도쿄", lat: 35.6762, lon: 139.6503 },
+  newyork: { name: "뉴욕", lat: 40.7128, lon: -74.0060 },
+  london: { name: "런던", lat: 51.5074, lon: -0.1278 },
+  paris: { name: "파리", lat: 48.8566, lon: 2.3522 }
 };
 
 if (!API_KEY) {
@@ -34,7 +34,7 @@ const server = http.createServer(async (req, res) => {
   try {
     const reqUrl = new URL(req.url, `http://localhost:${PORT}`);
 
-    // 1. 날씨 API 요청 (/api/weather?city=busan)
+    // 1. 단일 도시 날씨 API (/api/weather?city=seoul)
     if (reqUrl.pathname === "/api/weather") {
       const cityKey = reqUrl.searchParams.get("city") || "seoul";
       const targetCity = CITIES[cityKey] || CITIES.seoul;
@@ -44,14 +44,34 @@ const server = http.createServer(async (req, res) => {
       const response = await fetch(apiUrl);
       const data = await response.text();
 
-      res.writeHead(response.ok ? 200 : response.status, {
-        "Content-Type": "application/json; charset=utf-8"
-      });
+      res.writeHead(response.ok ? 200 : response.status, { "Content-Type": "application/json; charset=utf-8" });
       res.end(data);
       return;
     }
 
-    // 2. 정적 웹페이지 서빙 (public 폴더 내)
+    // 2. 전체 도시 병렬 날씨 API (/api/weather/compare)
+    if (reqUrl.pathname === "/api/weather/compare") {
+      const cityKeys = Object.keys(CITIES);
+      const promises = cityKeys.map(async (key) => {
+        const city = CITIES[key];
+        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${city.lon}&appid=${encodeURIComponent(API_KEY)}&units=metric&lang=kr`;
+        const resp = await fetch(apiUrl);
+        const json = await resp.json();
+        return {
+          key: key,
+          name: city.name,
+          temp: json.main ? Math.round(json.main.temp * 10) / 10 : 0,
+          humidity: json.main ? json.main.humidity : 0
+        };
+      });
+
+      const results = await Promise.all(promises);
+      res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
+      res.end(JSON.stringify(results));
+      return;
+    }
+
+    // 3. 정적 파일 서빙
     let requestedPath = reqUrl.pathname === "/" ? "/index.html" : reqUrl.pathname;
     const filePath = path.join(__dirname, "public", requestedPath);
     const ext = path.extname(filePath);
