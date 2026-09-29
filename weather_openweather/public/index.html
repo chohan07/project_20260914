@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>대한민국 주요 도시 날씨</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="card">
+    <!-- 도시 선택 드롭다운 메뉴 -->
+    <div class="select-box">
+      <select id="city-select">
+        <option value="seoul">서울</option>
+        <option value="busan">부산</option>
+        <option value="daegu">대구</option>
+        <option value="incheon">인천</option>
+        <option value="gwangju">광주</option>
+      </select>
+    </div>
+
+    <h1 id="city">날씨 정보</h1>
+    <p id="date" class="date-text"></p>
+
+    <div id="weather-info">
+      <img id="weather-icon" src="" alt="날씨 아이콘" class="weather-img">
+      <div id="description" class="desc-text">--</div>
+
+      <div class="temp-display">
+        <span id="temperature">--</span>
+      </div>
+
+      <div class="details">
+        <p>체감 온도: <span id="feels-like">--</span></p>
+        <p>습도: <span id="humidity">--</span></p>
+        <p>풍속: <span id="wind">--</span></p>
+        <p>기압: <span id="pressure">--</span></p>
+      </div>
+    </div>
+
+    <div id="error" class="error-msg"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

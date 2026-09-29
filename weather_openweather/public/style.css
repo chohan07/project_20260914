@@ -1,0 +1,83 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 320px;
+}
+
+.select-box {
+  margin-bottom: 1rem;
+}
+
+#city-select {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+h1 {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 0;
+}
+
+.date-text {
+  font-size: 0.85rem;
+  color: #777;
+  margin-top: 4px;
+  margin-bottom: 1rem;
+}
+
+.weather-img {
+  width: 80px;
+  height: 80px;
+}
+
+.desc-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.temp-display {
+  font-size: 2.8rem;
+  font-weight: bold;
+  color: #007bff;
+  margin: 0.5rem 0 1rem 0;
+}
+
+.details {
+  color: #555;
+  font-size: 0.9rem;
+  text-align: left;
+  background: #f8f9fa;
+  padding: 10px 15px;
+  border-radius: 8px;
+}
+
+.details p {
+  margin: 6px 0;
+}
+
+.error-msg {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 1rem;
+}
